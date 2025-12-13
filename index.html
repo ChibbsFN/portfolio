@@ -46,7 +46,16 @@
       background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
     }
     a{color:inherit}
+
+    .skip{
+      position:absolute; left:-999px; top:10px;
+      background:var(--text); color:var(--bg);
+      padding:10px 12px; border-radius:12px;
+    }
+    .skip:focus{left:12px; outline:none}
+
     .wrap{max-width:var(--max); margin:0 auto; padding: calc(var(--pad) + 10px) var(--pad) 80px}
+
     .topbar{
       position:sticky; top:0; z-index:30;
       backdrop-filter:saturate(160%) blur(12px);
@@ -91,8 +100,11 @@
       padding:8px 12px; border:1px solid var(--border);
       background:var(--card); border-radius:999px; color:var(--muted); font-size:.95rem;
     }
-    .dot{width:8px; height:8px; border-radius:999px; background:linear-gradient(180deg,var(--accent),var(--accent2));
-      box-shadow:0 0 0 4px rgba(124,92,255,.18);}
+    .dot{
+      width:8px; height:8px; border-radius:999px;
+      background:linear-gradient(180deg,var(--accent),var(--accent2));
+      box-shadow:0 0 0 4px rgba(124,92,255,.18);
+    }
     h1{font-size:var(--h1); margin:14px 0 10px; line-height:1.05; letter-spacing:-.02em}
     .lead{font-size:var(--p); color:var(--muted); max-width:72ch; margin:0 0 18px}
     .hero-grid{display:grid; grid-template-columns: 1.25fr .75fr; gap:16px; margin-top:18px}
@@ -152,6 +164,9 @@
     }
     .card p{margin:8px 0 0; color:var(--muted)}
     @media (max-width: 920px){ .card{grid-column: span 12} }
+
+    /* Index */
+    .chiprow{display:flex; flex-wrap:wrap; gap:10px; margin-top:10px}
 
     /* Minimal diary list */
     .diary{
@@ -280,6 +295,8 @@
 </head>
 
 <body data-theme="dark">
+  <a class="skip" href="#content">Skip to content</a>
+
   <div class="topbar">
     <div class="topbar-inner">
       <a class="brand" href="#top" aria-label="Home">
@@ -287,6 +304,7 @@
         <b>John</b>
       </a>
       <nav class="nav" aria-label="Primary">
+        <a href="#index">Index</a>
         <a href="#diary">Diary</a>
         <a href="#projects">Projects</a>
         <a href="#photos">Photos</a>
@@ -332,6 +350,89 @@
       </div>
     </header>
 
+    <section id="index">
+      <div class="section-head">
+        <div>
+          <h2 class="reveal">Index</h2>
+          <p class="sub reveal">Start here — the newest notes + the best pages.</p>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="card reveal">
+          <b>Site map</b>
+          <div class="chiprow">
+            <a class="btn" href="#diary" style="text-decoration:none;">📓 Diary</a>
+            <a class="btn" href="#projects" style="text-decoration:none;">🧩 Projects</a>
+            <a class="btn" href="#photos" style="text-decoration:none;">📷 Photos</a>
+            <a class="btn" href="#now" style="text-decoration:none;">🕰️ Now</a>
+            <a class="btn" href="#contact" style="text-decoration:none;">✉️ Contact</a>
+          </div>
+          <p style="color:var(--muted2); margin-top:10px;">
+            Keep the diary short. Let photos + projects do the heavy lifting.
+          </p>
+        </div>
+
+        <div class="card reveal">
+          <b>Latest diary entries</b>
+          <p style="margin-top:10px; color:var(--muted);">Update these whenever you post.</p>
+
+          <div style="margin-top:10px; display:grid; gap:10px;">
+            <a class="entry" href="#diary" style="border-color:var(--border);">
+              <div class="date">2025-12-__</div>
+              <div>
+                <b>A small winter routine that changed everything</b>
+                <span>Light, walks, and simple structure in Vantaa.</span>
+              </div>
+            </a>
+
+            <a class="entry" href="#diary" style="border-color:var(--border);">
+              <div class="date">2025-11-__</div>
+              <div>
+                <b>Vantaa feels underrated (in a good way)</b>
+                <span>Quiet, practical, close to nature.</span>
+              </div>
+            </a>
+
+            <a class="entry" href="#diary" style="border-color:var(--border);">
+              <div class="date">2025-10-__</div>
+              <div>
+                <b>What I wish I knew before moving</b>
+                <span>The small things that actually saved me time.</span>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <div class="card reveal" style="grid-column: span 12;">
+          <b>Featured</b>
+          <p style="margin-top:8px; color:var(--muted);">
+            If someone only looks at 3 things, make it these.
+          </p>
+
+          <div class="grid" style="margin-top:12px;">
+            <div class="project reveal" style="grid-column: span 4;">
+              <small>Project</small>
+              <h3 style="margin:6px 0 6px;">Project name</h3>
+              <div style="color:var(--muted);">One sentence + one outcome.</div>
+            </div>
+
+            <div class="project reveal" style="grid-column: span 4;">
+              <small>Diary</small>
+              <h3 style="margin:6px 0 6px;">Best post</h3>
+              <div style="color:var(--muted);">The one you’d send a friend.</div>
+            </div>
+
+            <div class="project reveal" style="grid-column: span 4;">
+              <small>Photos</small>
+              <h3 style="margin:6px 0 6px;">Favorite set</h3>
+              <div style="color:var(--muted);">A consistent look = premium.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section id="diary">
       <div class="section-head">
         <div>
@@ -342,7 +443,6 @@
 
       <div class="grid">
         <div class="diary reveal">
-          <!-- Replace # with real links later if you make separate pages -->
           <a class="entry" href="#">
             <div class="date">2025-12-__</div>
             <div>
@@ -413,34 +513,39 @@
       <div class="section-head">
         <div>
           <h2 class="reveal">Photos</h2>
-          <p class="sub reveal">Your photos are the “expensive” part. Use good light and consistent edits.</p>
+          <p class="sub reveal">A small set. Consistent edits. Strong mood.</p>
         </div>
       </div>
 
       <div class="gallery">
-        <div class="shot reveal" data-full="photo1.jpg" data-caption="Vantaa walk • ____">
-          <img src="photo1.jpg" alt="Vantaa walk" />
-          <div class="cap">Vantaa walk • ____</div>
+        <div class="shot reveal" data-full="photo1.jpg" data-caption="Blue corridor mirror • small moment">
+          <img src="photo1.jpg" alt="Blue corridor mirror" />
+          <div class="cap">Blue corridor mirror • small moment</div>
         </div>
-        <div class="shot reveal" data-full="photo2.jpg" data-caption="First snow • ____">
-          <img src="photo2.jpg" alt="First snow" />
-          <div class="cap">First snow • ____</div>
+
+        <div class="shot reveal" data-full="photo2.jpg" data-caption="Beanie weather • winter mood">
+          <img src="photo2.jpg" alt="Portrait in beanie" />
+          <div class="cap">Beanie weather • winter mood</div>
         </div>
-        <div class="shot reveal" data-full="photo3.jpg" data-caption="Forest reset • ____">
-          <img src="photo3.jpg" alt="Forest reset" />
-          <div class="cap">Forest reset • ____</div>
+
+        <div class="shot reveal" data-full="photo3.jpg" data-caption="Me & my cat • calm day">
+          <img src="photo3.jpg" alt="John holding a cat" />
+          <div class="cap">Me & my cat • calm day</div>
         </div>
-        <div class="shot reveal" data-full="photo4.jpg" data-caption="Coffee + quiet • ____">
-          <img src="photo4.jpg" alt="Coffee and quiet" />
-          <div class="cap">Coffee + quiet • ____</div>
+
+        <div class="shot reveal" data-full="photo4.jpg" data-caption="Golden eyes • best roommate">
+          <img src="photo4.jpg" alt="Cat close-up" />
+          <div class="cap">Golden eyes • best roommate</div>
         </div>
-        <div class="shot reveal" data-full="photo5.jpg" data-caption="Summer evening • ____">
-          <img src="photo5.jpg" alt="Summer evening" />
-          <div class="cap">Summer evening • ____</div>
+
+        <div class="shot reveal" data-full="photo5.jpg" data-caption="Hoodie day • everyday Finland">
+          <img src="photo5.jpg" alt="Close portrait in hoodie" />
+          <div class="cap">Hoodie day • everyday Finland</div>
         </div>
-        <div class="shot reveal" data-full="photo6.jpg" data-caption="A small moment • ____">
-          <img src="photo6.jpg" alt="A small moment" />
-          <div class="cap">A small moment • ____</div>
+
+        <div class="shot reveal" data-full="photo6.jpg" data-caption="Soft light • quiet vibe">
+          <img src="photo6.jpg" alt="Portrait in soft light" />
+          <div class="cap">Soft light • quiet vibe</div>
         </div>
       </div>
     </section>
@@ -460,10 +565,7 @@
         </div>
         <div class="card reveal">
           <b>This season</b>
-          <p>
-            One goal that matters + one habit that supports it.
-            (This keeps the site feeling alive without adding clutter.)
-          </p>
+          <p>One goal that matters + one habit that supports it.</p>
         </div>
       </div>
     </section>
