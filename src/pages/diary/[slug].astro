@@ -4,6 +4,17 @@ import { getCollection } from "astro:content";
 
 export async function getStaticPaths() {
   const posts = await getCollection("diary", ({ data }) => !data.draft);
+
+  return posts
+    .map((post) => {
+      const slug = String((post.slug ?? post.id)?.replace(/\.md$/, "") ?? "").trim();
+      if (!slug) return null;
+      return { params: { slug }, props: { post } };
+    })
+    .filter(Boolean);
+}
+
+) => !data.draft);
   return posts.map((post) => ({ params: { slug: post.slug }, props: { post } }));
 }
 
