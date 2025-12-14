@@ -1,0 +1,20 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+const { frontmatter } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const d = frontmatter.pubDate instanceof Date ? frontmatter.pubDate : new Date(frontmatter.pubDate);
+const dateStr = d.toLocaleDateString("en-GB", { year: "numeric", month: "short", day: "2-digit" });
+---
+<BaseLayout title={`${frontmatter.title} — John`}>
+  <article class="post">
+    <p class="meta">
+      <a class="btn" href={`${base}posts/`} style="text-decoration:none;">← All posts</a>
+      <span style="margin-left:10px;">{dateStr}</span>
+      {frontmatter.tags?.length ? <span style="margin-left:10px;">• {frontmatter.tags.join(" · ")}</span> : null}
+    </p>
+    <h1 class="reveal">{frontmatter.title}</h1>
+    <p class="sub reveal">{frontmatter.description}</p>
+    <div style="height:10px"></div>
+    <slot />
+  </article>
+</BaseLayout>
