@@ -1,0 +1,67 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const photos = [
+  { src: "photo1.jpg", caption: "Vantaa • Winter • Quiet" },
+  { src: "photo2.jpg", caption: "Coffee walks • Small rituals" },
+  { src: "photo3.jpg", caption: "Forest light • Reset" },
+  { src: "photo4.jpg", caption: "City • Evening" },
+  { src: "photo5.jpg", caption: "Home • Calm" },
+  { src: "photo6.jpg", caption: "Weekend • Slow" },
+];
+---
+
+<BaseLayout title="Photos — John" description="Photos from life in Finland.">
+  <div class="container">
+    <div class="card">
+      <div class="kicker">Photos</div>
+      <h1>Life, lately</h1>
+      <p class="lead">
+        A small gallery. For the writing, go to the <a href={`${import.meta.env.BASE_URL}diary/`}>diary</a>.
+      </p>
+
+      <div class="hr"></div>
+
+      <div class="photos">
+        {photos.map((p) => (
+          <figure class="photo">
+            <img class="photo__img" src={`${import.meta.env.BASE_URL}${p.src}`} alt={p.caption} loading="lazy" />
+            <figcaption class="photo__cap">{p.caption}</figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style is:global>
+  .photos{
+    display:grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  @media (min-width: 760px){
+    .photos{ grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (min-width: 1040px){
+    .photos{ grid-template-columns: repeat(3, 1fr); }
+  }
+  .photo{
+    margin:0;
+    border-radius: 18px;
+    overflow:hidden;
+    border: 1px solid rgba(255,255,255,.10);
+    background: rgba(255,255,255,.02);
+  }
+  .photo__img{
+    width:100%;
+    aspect-ratio: 4/3;
+    object-fit: cover;
+    display:block;
+  }
+  .photo__cap{
+    padding: 10px 12px;
+    font-size: 12px;
+    color: rgba(255,255,255,.68);
+  }
+</style>

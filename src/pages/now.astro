@@ -1,0 +1,28 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Now — John" description="What I'm doing now.">
+  <div class="container">
+    <div class="card">
+      <div class="kicker">Now</div>
+      <h1>What I’m focused on</h1>
+      <p class="lead">Update this page whenever you feel like it. Even once a month is great.</p>
+
+      <div class="hr"></div>
+
+      <h2>Working on</h2>
+      <p>Making this portfolio/diary better — writing small posts and polishing projects.</p>
+
+      <h2>Learning</h2>
+      <p>Astro, clean design, and consistency.</p>
+
+      <h2>Exploring</h2>
+      <p>Vantaa & nearby nature trails — especially in winter light.</p>
+
+      <div class="hr"></div>
+      <a class="btn" href={`${import.meta.env.BASE_URL}work/`}>See portfolio →</a>
+      <a class="btn" style="margin-left: 10px;" href={`${import.meta.env.BASE_URL}diary/`}>Read diary →</a>
+    </div>
+  </div>
+</BaseLayout>

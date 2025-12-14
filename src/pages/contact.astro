@@ -1,0 +1,27 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Contact — John" description="Contact John.">
+  <div class="container">
+    <div class="card">
+      <div class="kicker">Contact</div>
+      <h1>Say hi</h1>
+      <p class="lead">Add your email and socials here.</p>
+
+      <div class="hr"></div>
+
+      <div class="pillrow">
+        <a class="pill" href="mailto:your@email.com">📩 your@email.com</a>
+        <a class="pill" href="https://github.com/ChibbsFN">🐙 GitHub</a>
+        <a class="pill" href="#">💼 LinkedIn</a>
+      </div>
+
+      <div class="hr"></div>
+
+      <p class="lead">
+        Looking for my writing? Start at the <a href={`${import.meta.env.BASE_URL}diary/`}>diary</a>.
+      </p>
+    </div>
+  </div>
+</BaseLayout>

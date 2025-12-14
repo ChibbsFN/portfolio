@@ -1,0 +1,41 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+const projects = (await getCollection("projects"))
+  .sort((a,b) => (b.data.date?.valueOf() ?? 0) - (a.data.date?.valueOf() ?? 0));
+---
+
+<BaseLayout title="Portfolio — John" description="Projects and work by John in Vantaa, Finland.">
+  <div class="container">
+    <div class="card">
+      <div class="kicker">Portfolio</div>
+      <h1>Projects</h1>
+      <p class="lead">
+        A small selection of things I’ve built. For the personal side, read the <a href={`${import.meta.env.BASE_URL}diary/`}>diary</a>.
+      </p>
+
+      <div class="hr"></div>
+
+      <ul class="list">
+        {projects.map((p) => (
+          <li>
+            <a class="item" href={`${import.meta.env.BASE_URL}work/${p.slug}/`}>
+              <div class="item__top">
+                <span class="item__title">{p.data.title}</span>
+                <span class="item__meta">{p.data.stack?.slice(0,3).join(" • ")}</span>
+              </div>
+              <div class="item__desc">{p.data.description}</div>
+            </a>
+          </li>
+        ))}
+      </ul>
+
+      <div class="hr"></div>
+
+      <p class="lead">
+        To add a project: create a new Markdown file in <code>src/content/projects</code>.
+      </p>
+    </div>
+  </div>
+</BaseLayout>

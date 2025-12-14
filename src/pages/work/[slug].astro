@@ -1,0 +1,45 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+  const projects = await getCollection("projects");
+  return projects.map((project) => ({ params: { slug: project.slug }, props: { project } }));
+}
+
+const { project } = Astro.props;
+const { Content } = await project.render();
+---
+
+<BaseLayout title={`${project.data.title} — Portfolio`} description={project.data.description}>
+  <div class="container">
+    <article class="card">
+      <div class="kicker">Portfolio</div>
+      <h1>{project.data.title}</h1>
+      <p class="lead">{project.data.description}</p>
+
+      <div class="pillrow">
+        {project.data.role ? <span class="pill">🧩 {project.data.role}</span> : null}
+        {project.data.stack?.length ? <span class="pill">🛠️ {project.data.stack.join(" • ")}</span> : null}
+      </div>
+
+      <div class="pillrow" style="margin-top: 10px;">
+        <a class="pill" href={`${import.meta.env.BASE_URL}diary/`}>↔ Diary</a>
+        <a class="pill" href={`${import.meta.env.BASE_URL}work/`}>All projects</a>
+        {project.data.link ? <a class="pill" href={project.data.link}>Live</a> : null}
+        {project.data.repo ? <a class="pill" href={project.data.repo}>Repo</a> : null}
+      </div>
+
+      <div class="hr"></div>
+
+      <div class="prose">
+        <Content />
+      </div>
+
+      <div class="hr"></div>
+      <p class="lead">
+        Want to see how I live and think day-to-day? Read the <a href={`${import.meta.env.BASE_URL}diary/`}>diary</a>.
+      </p>
+    </article>
+  </div>
+</BaseLayout>

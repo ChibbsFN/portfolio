@@ -1,0 +1,44 @@
+backend:
+  name: github
+  repo: ChibbsFN/portfolio
+  branch: main
+
+# IMPORTANT:
+# The GitHub backend requires an OAuth "auth endpoint".
+# GitHub Pages cannot run backend code. Easiest fix: deploy a free OAuth endpoint on Netlify/Vercel.
+# If you don't set an auth endpoint, you can still edit Markdown directly in GitHub (recommended simple path).
+
+media_folder: "public/uploads"
+public_folder: "/uploads"
+
+collections:
+  - name: "diary"
+    label: "Diary"
+    folder: "src/content/diary"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Description", name: "description", widget: "string", required: false }
+      - { label: "Publish date", name: "pubDate", widget: "datetime" }
+      - { label: "Tags", name: "tags", widget: "list", required: false }
+      - { label: "Draft", name: "draft", widget: "boolean", default: false }
+      - { label: "Cover image", name: "cover", widget: "image", required: false }
+      - { label: "Body", name: "body", widget: "markdown" }
+
+  - name: "projects"
+    label: "Projects"
+    folder: "src/content/projects"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Description", name: "description", widget: "string" }
+      - { label: "Role", name: "role", widget: "string", required: false }
+      - { label: "Stack", name: "stack", widget: "list", required: false }
+      - { label: "Live link", name: "link", widget: "string", required: false }
+      - { label: "Repo link", name: "repo", widget: "string", required: false }
+      - { label: "Featured", name: "featured", widget: "boolean", default: false }
+      - { label: "Date", name: "date", widget: "datetime", required: false }
+      - { label: "Cover image", name: "cover", widget: "image", required: false }
+      - { label: "Body", name: "body", widget: "markdown" }

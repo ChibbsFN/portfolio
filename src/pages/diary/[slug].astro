@@ -1,0 +1,40 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("diary", ({ data }) => !data.draft);
+  return posts.map((post) => ({ params: { slug: post.slug }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+---
+
+<BaseLayout title={`${post.data.title} — Diary`} description={post.data.description ?? "Diary entry"}>
+  <div class="container">
+    <article class="card">
+      <div class="kicker">Diary • {post.data.pubDate.toISOString().slice(0,10)}</div>
+      <h1>{post.data.title}</h1>
+      {post.data.description ? <p class="lead">{post.data.description}</p> : null}
+
+      <div class="pillrow">
+        <a class="pill" href={`${import.meta.env.BASE_URL}work/`}>↔ Portfolio</a>
+        <a class="pill" href={`${import.meta.env.BASE_URL}diary/`}>All diary posts</a>
+        <a class="pill" href={`${import.meta.env.BASE_URL}contact/`}>Contact</a>
+      </div>
+
+      <div class="hr"></div>
+
+      <div class="prose">
+        <Content />
+      </div>
+
+      <div class="hr"></div>
+
+      <p class="lead">
+        Want the “work side” of me? Check my <a href={`${import.meta.env.BASE_URL}work/`}>portfolio</a>.
+      </p>
+    </article>
+  </div>
+</BaseLayout>

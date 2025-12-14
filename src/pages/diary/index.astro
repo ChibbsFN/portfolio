@@ -1,0 +1,34 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+const entries = (await getCollection("diary", ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<BaseLayout title="Diary — John in Vantaa" description="Personal diary entries from Vantaa, Finland.">
+  <div class="container">
+    <div class="card">
+      <div class="kicker">Diary</div>
+      <h1>Notes from Vantaa</h1>
+      <p class="lead">
+        Short, honest entries about daily life in Finland. If you’re here for my work, jump to the
+        <a href={`${import.meta.env.BASE_URL}work/`}> portfolio</a>.
+      </p>
+
+      <ul class="list" style="margin-top:16px;">
+        {entries.map((e) => (
+          <li>
+            <a class="item" href={`${import.meta.env.BASE_URL}diary/${e.slug}/`}>
+              <div class="item__top">
+                <span class="item__title">{e.data.title}</span>
+                <span class="item__meta">{e.data.pubDate.toISOString().slice(0,10)}</span>
+              </div>
+              <div class="item__desc">{e.data.description ?? ""}</div>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</BaseLayout>

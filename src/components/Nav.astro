@@ -1,0 +1,36 @@
+---
+const links = [
+  { href: "/", label: "Index" },
+  { href: "/diary/", label: "Diary" },
+  { href: "/work/", label: "Portfolio" },
+  { href: "/photos/", label: "Photos" },
+  { href: "/now/", label: "Now" },
+  { href: "/contact/", label: "Contact" },
+];
+const active = Astro.url.pathname;
+function isActive(href) {
+  if (href === "/") return active === "/" || active === "/index";
+  return active.startsWith(href);
+}
+---
+
+<header class="topbar">
+  <div class="topbar__inner">
+    <a class="brand" href={`${import.meta.env.BASE_URL}`.replace(/\/$/, "") + "/"} aria-label="Home">
+      <span class="brand__dot" aria-hidden="true"></span>
+      <span class="brand__name">John</span>
+    </a>
+
+    <nav class="nav" aria-label="Primary">
+      {links.map((l) => (
+        <a class={`nav__link ${isActive(l.href) ? "is-active" : ""}`} href={`${import.meta.env.BASE_URL}`.replace(/\/$/, "") + l.href}>
+          {l.label}
+        </a>
+      ))}
+    </nav>
+
+    <a class="nav__cta" href={`${import.meta.env.BASE_URL}`.replace(/\/$/, "") + "/work/"}>
+      View portfolio →
+    </a>
+  </div>
+</header>

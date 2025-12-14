@@ -2,273 +2,113 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 
-const base = import.meta.env.BASE_URL;
-const posts = (await getCollection("diary"))
-  .filter(p => !p.data.draft)
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const diaryEntries = (await getCollection("diary", ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
 
-const latest = posts.slice(0, 3);
+const featuredProjects = (await getCollection("projects"))
+  .filter((p) => p.data.featured)
+  .slice(0, 3);
 ---
 
-<BaseLayout>
-  <header class="hero" id="top">
-    <span class="kicker reveal"><span class="dot"></span> Minimal diary • Portfolio • Life in Finland</span>
-    <h1 class="reveal">John in Vantaa.</h1>
-    <p class="lead reveal">
-      I live in <b>Vantaa, Finland</b>. This is my minimal corner of the internet:
-      a quiet diary of everyday life here, plus the work I’m building along the way.
-    </p>
-
-    <div class="hero-grid">
-      <div class="panel reveal">
-        <div class="panel-pad">
-          <h2 style="margin:0 0 6px;">About</h2>
-          <p class="sub" style="margin:0; max-width: 72ch;">
-            Replace this with 3–5 sentences that feel real: what brought you to Finland, what you do,
-            and what you’re curious about right now. Keep it concrete (places, seasons, routines).
-          </p>
-
-          <div class="grid" style="margin-top:14px;">
-            <div class="card" style="grid-column: span 12; box-shadow:none;">
-              <b>Quick facts</b>
-              <p>
-                📍 Vantaa • 🇫🇮 Finland • ☕ coffee walks • 🌲 forests • 🔧 building projects • ✍️ writing short notes
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="portrait reveal" role="img" aria-label="John portrait photo">
-        <div class="badge">📍 Vantaa • since 20__</div>
-      </div>
-    </div>
-  </header>
-
-  <section id="index">
-    <div class="section-head">
-      <div>
-        <h2 class="reveal">Index</h2>
-        <p class="sub reveal">Start here — the newest notes + the best pages.</p>
-      </div>
-    </div>
-
-    <div class="grid">
-      <div class="card reveal">
-        <b>Site map</b>
-        <div class="chiprow">
-          <a class="btn" href={`${base}#diary`} style="text-decoration:none;">📓 Diary</a>
-          <a class="btn" href={`${base}#projects`} style="text-decoration:none;">🧩 Projects</a>
-          <a class="btn" href={`${base}#photos`} style="text-decoration:none;">📷 Photos</a>
-          <a class="btn" href={`${base}#now`} style="text-decoration:none;">🕰️ Now</a>
-          <a class="btn" href={`${base}#contact`} style="text-decoration:none;">✉️ Contact</a>
-        </div>
-        <p style="color:var(--muted2); margin-top:10px;">
-          Keep the diary short. Let photos + projects do the heavy lifting.
+<BaseLayout title="John in Vantaa — diary + portfolio" description="Minimal diary, portfolio, and life in Finland.">
+  <div class="container">
+    <div class="grid two">
+      <section class="card">
+        <div class="kicker">Minimal diary • Portfolio • Life in Finland</div>
+        <h1>John in Vantaa.</h1>
+        <p class="lead">
+          I live in <strong>Vantaa, Finland</strong>. This is my small corner of the internet:
+          a calm diary of everyday life + a portfolio of what I build.
         </p>
-      </div>
 
-      <div class="card reveal">
-        <b>Latest diary entries</b>
-        <p style="margin-top:10px; color:var(--muted);">These update automatically from your Markdown posts.</p>
+        <div class="pillrow">
+          <span class="pill">📍 Vantaa</span>
+          <span class="pill">🇫🇮 Finland</span>
+          <span class="pill">☕ coffee walks</span>
+          <span class="pill">🌲 forests</span>
+          <span class="pill">🧠 learning</span>
+        </div>
 
-        <div style="margin-top:10px; display:grid; gap:10px;">
-          {latest.map((post) => (
-            <a class="entry" href={`${base}posts/${post.id}/`} style="border-color:var(--border);">
-              <div class="date">{post.data.pubDate.toISOString().slice(0,10)}</div>
-              <div>
-                <b>{post.data.title}</b>
-                <span>{post.data.description}</span>
-              </div>
-            </a>
+        <div class="hr"></div>
+
+        <div style="display:flex; gap:10px; flex-wrap: wrap;">
+          <a class="btn primary" href={`${import.meta.env.BASE_URL}work/`}>View portfolio</a>
+          <a class="btn" href={`${import.meta.env.BASE_URL}diary/`}>Read the diary</a>
+          <a class="btn" href={`${import.meta.env.BASE_URL}photos/`}>See photos</a>
+        </div>
+
+        <h2>Latest diary entries</h2>
+        <p class="lead">Short notes you can read in 2–3 minutes.</p>
+
+        <ul class="list">
+          {diaryEntries.map((e) => (
+            <li>
+              <a class="item" href={`${import.meta.env.BASE_URL}diary/${e.slug}/`}>
+                <div class="item__top">
+                  <span class="item__title">{e.data.title}</span>
+                  <span class="item__meta">{e.data.pubDate.toISOString().slice(0,10)}</span>
+                </div>
+                <div class="item__desc">{e.data.description ?? ""}</div>
+              </a>
+            </li>
           ))}
+        </ul>
+
+        <div class="hr"></div>
+
+        <h2>Featured projects</h2>
+        <p class="lead">A few things I’m proud of. (More on the Portfolio page.)</p>
+
+        <ul class="list">
+          {featuredProjects.length ? featuredProjects.map((p) => (
+            <li>
+              <a class="item" href={`${import.meta.env.BASE_URL}work/${p.slug}/`}>
+                <div class="item__top">
+                  <span class="item__title">{p.data.title}</span>
+                  <span class="item__meta">{p.data.stack?.slice(0,2).join(" • ")}</span>
+                </div>
+                <div class="item__desc">{p.data.description}</div>
+              </a>
+            </li>
+          )) : (
+            <li class="item">
+              <div class="item__top"><span class="item__title">Add your first project</span><span class="item__meta">Portfolio</span></div>
+              <div class="item__desc">Go to <code>src/content/projects</code> and add a Markdown file.</div>
+            </li>
+          )}
+        </ul>
+      </section>
+
+      <aside class="card">
+        <div class="portrait">
+          <img class="portrait__img" src={`${import.meta.env.BASE_URL}your-photo.jpg`} alt="John portrait" loading="lazy" />
+          <div class="portrait__meta">
+            <span class="badge">📍 Vantaa</span>
+            <span class="badge">Updated: {new Date().toISOString().slice(0,10)}</span>
+          </div>
         </div>
 
-        <p style="margin-top:12px;">
-          <a class="btn" href={`${base}posts/`} style="text-decoration:none;">View all posts →</a>
-        </p>
-      </div>
+        <div style="height: 14px;"></div>
 
-      <div class="card reveal" style="grid-column: span 12;">
-        <b>Featured</b>
-        <p style="margin-top:8px; color:var(--muted);">
-          If someone only looks at 3 things, make it these.
-        </p>
-
-        <div class="grid" style="margin-top:12px;">
-          <div class="project reveal" style="grid-column: span 4;">
-            <small>Project</small>
-            <h3 style="margin:6px 0 6px;">Project name</h3>
-            <div style="color:var(--muted);">One sentence + one outcome.</div>
-          </div>
-
-          <div class="project reveal" style="grid-column: span 4;">
-            <small>Diary</small>
-            <h3 style="margin:6px 0 6px;">Best post</h3>
-            <div style="color:var(--muted);">The one you’d send a friend.</div>
-          </div>
-
-          <div class="project reveal" style="grid-column: span 4;">
-            <small>Photos</small>
-            <h3 style="margin:6px 0 6px;">Favorite set</h3>
-            <div style="color:var(--muted);">A consistent look = premium.</div>
-          </div>
+        <div class="card soft">
+          <h2 style="margin-top:0;">A quick “Now”</h2>
+          <p class="lead">
+            Building a better routine for winter, writing small notes, and keeping life simple.
+          </p>
+          <a class="btn" href={`${import.meta.env.BASE_URL}now/`}>Open Now page</a>
         </div>
-      </div>
+
+        <div style="height: 14px;"></div>
+
+        <div class="card soft">
+          <h2 style="margin-top:0;">Editing content</h2>
+          <p class="lead">
+            You can edit posts and projects as Markdown files in GitHub. Optional admin UI is at <code>/admin</code>.
+          </p>
+          <a class="btn" href={`${import.meta.env.BASE_URL}admin/`}>Open editor</a>
+        </div>
+      </aside>
     </div>
-  </section>
-
-  <section id="diary">
-    <div class="section-head">
-      <div>
-        <h2 class="reveal">Diary</h2>
-        <p class="sub reveal">Short entries. Minimal. The point is consistency, not perfection.</p>
-      </div>
-    </div>
-
-    <div class="grid">
-      <div class="diary reveal">
-        {posts.slice(0,6).map((post) => (
-          <a class="entry" href={`${base}posts/${post.id}/`}>
-            <div class="date">{post.data.pubDate.toISOString().slice(0,10)}</div>
-            <div>
-              <b>{post.data.title}</b>
-              <span>{post.data.description}</span>
-            </div>
-          </a>
-        ))}
-      </div>
-
-      <div class="card reveal">
-        <b>Writing style (my rule)</b>
-        <p>One scene, one detail, one takeaway. If it feels too long, it’s probably two posts.</p>
-      </div>
-
-      <div class="card reveal">
-        <b>Topics I keep coming back to</b>
-        <p>Seasons • routines • language learning • social rules • nature • work habits • tiny everyday wins.</p>
-      </div>
-    </div>
-  </section>
-
-  <section id="projects">
-    <div class="section-head">
-      <div>
-        <h2 class="reveal">Projects</h2>
-        <p class="sub reveal">A small portfolio — only the work I’m proud to keep.</p>
-      </div>
-    </div>
-
-    <div class="grid">
-      <div class="project reveal">
-        <small>Project</small>
-        <h3 style="margin:6px 0 6px;">Project name</h3>
-        <div style="color:var(--muted);">1–2 lines: what it is, who it’s for, and the result.</div>
-      </div>
-      <div class="project reveal">
-        <small>Project</small>
-        <h3 style="margin:6px 0 6px;">Project name</h3>
-        <div style="color:var(--muted);">Add a link later. Keep it clean. Keep it specific.</div>
-      </div>
-      <div class="project reveal">
-        <small>Project</small>
-        <h3 style="margin:6px 0 6px;">Project name</h3>
-        <div style="color:var(--muted);">What you built • tools used • impact.</div>
-      </div>
-    </div>
-  </section>
-
-  <section id="photos">
-    <div class="section-head">
-      <div>
-        <h2 class="reveal">Photos</h2>
-        <p class="sub reveal">A small set. Consistent edits. Strong mood.</p>
-      </div>
-    </div>
-
-    <div class="gallery">
-      <div class="shot reveal" data-full={`${base}photo1.jpg`} data-caption="Blue corridor mirror • small moment">
-        <img src={`${base}photo1.jpg`} alt="Blue corridor mirror" />
-        <div class="cap">Blue corridor mirror • small moment</div>
-      </div>
-
-      <div class="shot reveal" data-full={`${base}photo2.jpg`} data-caption="Beanie weather • winter mood">
-        <img src={`${base}photo2.jpg`} alt="Portrait in beanie" />
-        <div class="cap">Beanie weather • winter mood</div>
-      </div>
-
-      <div class="shot reveal" data-full={`${base}photo3.jpg`} data-caption="Me & my cat • calm day">
-        <img src={`${base}photo3.jpg`} alt="John holding a cat" />
-        <div class="cap">Me & my cat • calm day</div>
-      </div>
-
-      <div class="shot reveal" data-full={`${base}photo4.jpg`} data-caption="Golden eyes • best roommate">
-        <img src={`${base}photo4.jpg`} alt="Cat close-up" />
-        <div class="cap">Golden eyes • best roommate</div>
-      </div>
-
-      <div class="shot reveal" data-full={`${base}photo5.jpg`} data-caption="Hoodie day • everyday Finland">
-        <img src={`${base}photo5.jpg`} alt="Close portrait in hoodie" />
-        <div class="cap">Hoodie day • everyday Finland</div>
-      </div>
-
-      <div class="shot reveal" data-full={`${base}photo6.jpg`} data-caption="Soft light • quiet vibe">
-        <img src={`${base}photo6.jpg`} alt="Portrait in soft light" />
-        <div class="cap">Soft light • quiet vibe</div>
-      </div>
-    </div>
-  </section>
-
-  <section id="now">
-    <div class="section-head">
-      <div>
-        <h2 class="reveal">Now</h2>
-        <p class="sub reveal">Updated occasionally — a simple “where I’m at” snapshot.</p>
-      </div>
-    </div>
-
-    <div class="grid">
-      <div class="card reveal">
-        <b>Current focus</b>
-        <p>Work: ____ • Learning: ____ • Building: ____</p>
-      </div>
-      <div class="card reveal">
-        <b>This season</b>
-        <p>One goal that matters + one habit that supports it.</p>
-      </div>
-    </div>
-  </section>
-
-  <section id="contact">
-    <div class="section-head">
-      <div>
-        <h2 class="reveal">Contact</h2>
-        <p class="sub reveal">Keep it simple. One email + a couple links.</p>
-      </div>
-    </div>
-
-    <div class="grid">
-      <div class="card reveal">
-        <b>Reach me</b>
-        <p style="margin-top:6px;">Email: <a href="mailto:you@example.com">you@example.com</a></p>
-        <p>Links: <a href="#">LinkedIn</a> • <a href="#">GitHub</a> • <a href="#">Instagram</a></p>
-      </div>
-
-      <div class="card reveal">
-        <b>Message</b>
-        <p style="margin-top:6px;">Connect this form to Formspree / Netlify Forms (replace the action URL).</p>
-        <form action="#" method="post">
-          <input name="name" placeholder="Your name" autocomplete="name" />
-          <input name="email" placeholder="Your email" autocomplete="email" />
-          <textarea name="message" placeholder="Your message"></textarea>
-          <button class="btn primary" type="submit">Send</button>
-        </form>
-      </div>
-    </div>
-
-    <footer>
-      <span>© <span data-year></span> John</span>
-      <span>Minimal • Fast • Accessible</span>
-    </footer>
-  </section>
+  </div>
 </BaseLayout>
