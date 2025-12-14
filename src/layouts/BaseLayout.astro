@@ -18,7 +18,7 @@ const ogImage = Astro.site ? new URL(base + "og-image.jpg", Astro.site).toString
   <meta property="og:image" content={ogImage} />
   <title>{pageTitle}</title>
 
-  <style>
+  <style is:global>
     :root{
       --bg:#0b0d12; --bg2:#0e1320; --text:#eaf0ff;
       --muted:rgba(234,240,255,.72); --muted2:rgba(234,240,255,.55);
