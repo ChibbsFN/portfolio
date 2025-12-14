@@ -10,4 +10,7 @@
   "dependencies": {
     "astro": "^5.0.0"
   }
+  "scripts": {
+  "build": "node ./node_modules/astro/astro.js build"
+}
 }
