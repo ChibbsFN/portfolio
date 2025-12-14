@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "astro dev",
-    "build": "node ./node_modules/astro/astro.js build",
+    "build": "astro build",
     "preview": "astro preview"
   },
   "dependencies": {
